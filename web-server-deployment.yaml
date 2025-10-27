@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-server
+  namespace: default
+spec:
+  replicas: 3  # Number of replicas
+  selector:
+    matchLabels:
+      app: web-server
+  template:
+    metadata:
+      labels:
+        app: web-server
+    spec:
+      initContainers:
+      - name: init-serving-host
+        image: busybox
+        command: ['sh', '-c', 'echo "serving-host=Host-$(echo $HOSTNAME | tail -c 6)" > /usr/share/nginx/html/serving-host.txt']
+        volumeMounts:
+        - name: web-content
+          mountPath: /usr/share/nginx/html
+      containers:
+      - name: apache
+        image: httpd:2.4
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: web-content
+          mountPath: /usr/local/apache2/htdocs/
+      volumes:
+      - name: web-content
+        emptyDir: {}
+      - name: web-server-config
+        configMap:
+          name: web-server-config

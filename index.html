@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web Server</title>
+</head>
+<body>
+    <h1>Welcome to the Web Server!</h1>
+    <p>Pod IP: <span id="pod-ip"></span></p>
+    <p>Serving Host: <span id="serving-host"></span></p>
+
+    <script>
+        document.getElementById("pod-ip").innerText = window.location.hostname;
+        document.getElementById("serving-host").innerText = "Host-" + window.location.hostname.slice(-5);
+    </script>
+</body>
+</html>
