@@ -1,0 +1,6 @@
+apiVersion: v2
+name: kubeassignment
+description: Umbrella chart for web + mysql + monitor (kind-friendly)
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

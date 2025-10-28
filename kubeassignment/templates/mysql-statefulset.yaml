@@ -1,0 +1,38 @@
+{{- if .Values.mysql.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Values.mysql.name }}
+spec:
+  serviceName: "{{ .Values.mysql.name }}-headless"
+  replicas: {{ .Values.mysql.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.mysql.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.mysql.name }}
+    spec:
+      containers:
+      - name: mysql
+        image: {{ .Values.mysql.image }}
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "{{ .Values.mysql.rootPassword }}"
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-data
+          mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: {{ .Values.mysql.storage }}
+{{- end }}

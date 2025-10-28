@@ -1,0 +1,21 @@
+{{- if .Values.monitor.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pod-watcher
+spec:
+  replicas: {{ .Values.monitor.replicas }}
+  selector:
+    matchLabels:
+      app: pod-watcher
+  template:
+    metadata:
+      labels:
+        app: pod-watcher
+    spec:
+      serviceAccountName: pod-watcher
+      containers:
+      - name: pod-watcher
+        image: {{ .Values.monitor.image }}
+        imagePullPolicy: IfNotPresent
+{{- end }}

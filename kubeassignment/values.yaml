@@ -1,0 +1,14 @@
+replicaCount: 3
+
+mysql:
+  enabled: true
+  name: mysql
+  image: mysql:8.0
+  rootPassword: ChangeMe123
+  storage: 5Gi
+  replicas: 3
+
+monitor:
+  enabled: true
+  image: acr.io/pod-watcher:latest
+  replicas: 1
